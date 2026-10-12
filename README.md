@@ -1,1 +1,341 @@
-# Pertemuan-8-PBO
+# Tahapan
+
+## Menambahkan view
+
+### Tambahkan package view sebagai wadah GUI dan tambahkan JFrame
+GUI (FormBuku) berfungsi sebagai tampilan antarmuka yang digunakan pengguna untuk mengelola data buku. Melalui GUI, pengguna bisa memasukkan data buku, melihat daftar buku, mengubah data, dan menghapus data tanpa berinteraksi langsung  dengan kode atau database.
+
+package view digunakan untuk menempatkan class yang menangani tampilan program. Sementara itu, FormBuku merupakan jendela GUI yang dibuat menggunakan Java Swing, yaitu pustaka Java untuk membuat antarmuka berbasis desktop.
+
+alur
+- tambahkan JFrame
+- tambahkan JPanel full di layar sebagai panel tempat container diletakkan
+- <img width="787" height="497" alt="image" src="https://github.com/user-attachments/assets/b7c53ca7-603b-46de-bb16-ebfcbf8d9f98" />
+- tambahkan label CRUD paling atas tengah > klik 2x > edit nama > CRUD > edit font
+- tambahkan textfield > klik 2x > change variable name > txtIdBuku > close > klik 2x > hapus tampilan nama
+- tambahkan textfield > klik 2x > change variable name > txtJudulBuku > close > klik 2x > hapus tampilan nama
+- tambahkan textfield > klik 2x > change variable name > txtStokBuku > close > klik 2x > hapus tampilan nama
+- tambahkan button > klik 1x > klik kanan > change variable name > btnTambah > close > klik kanan > tampilan nama ubah jadi "Tambah" > ubah warna background
+- tambahkan button > klik 1x > klik kanan > change variable name > btnEdit > close > klik kanan > tampilan nama ubah jadi "Edit" > ubah warna background
+- tambahkan button > klik 1x > klik kanan > change variable name > btnHapus > close > klik kanan > tampilan nama ubah jadi "Hapus" > ubah warna background
+- tambahkan tabel > klik 1x > klik kanan > change variable name > tblBuku > close > klik kanan > Table Contens > Columns > ubah title "Id Buku", "Judul", "Stok"
+- tambahkan source code btnTambah > klik 2x > CP > balik design
+- tambahkan source code btnEdit > klik 2x > CP > balik design
+- tambahkan source code btnHapus > klik 2x > CP > balik design
+- tambahkan source code tblBuku > klik kanan > properties > events > mouseClicked > tblBukuMouseClicked > close > tambahkan source code
+- tes
+- klik frame > resizeable nonaktif
+
+
+Kode dalam tombol
+- buttonTambah
+  ```java
+          try {
+            controller.tambahBuku(txtIdBuku.getText(), txtJudulBuku.getText(), txtStokBuku.getText());
+            tampilData();
+            bersihkanForm();
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+  ```
+
+- buttonEdit
+  ```java
+          try {
+            controller.ubahBuku(txtIdBuku.getText(), txtJudulBuku.getText(), txtStokBuku.getText());
+            tampilData();
+            bersihkanForm();
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+  ```
+
+- buttonLihat
+  ```java
+          tampilData();
+  ```
+
+- buttonHapus
+  ```java
+          controller.hapusBuku(txtIdBuku.getText());
+        tampilData();
+        bersihkanForm();
+  ```
+
+- tabel
+    ```java
+          int baris = tblBuku.getSelectedRow();
+        txtIdBuku.setText(tblBuku.getValueAt(baris, 0).toString());
+        txtJudulBuku.setText(tblBuku.getValueAt(baris, 1).toString());
+        txtStokBuku.setText(tblBuku.getValueAt(baris, 2).toString());
+    ```
+  
+- Full kode:
+
+```java
+  // ===========================================================
+// Topik: GUI
+// Letakkan file ini pada src/view/FormBuku.java
+// ===========================================================
+
+package view;
+
+import model.Buku;
+import java.util.List;
+import javax.swing.JOptionPane;
+import controller.BukuController;
+import javax.swing.table.DefaultTableModel;
+
+public class FormBuku extends javax.swing.JFrame {
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormBuku.class.getName());
+
+    BukuController controller = new BukuController();
+    DefaultTableModel tabelModel = new DefaultTableModel();
+    
+    public FormBuku() {
+        initComponents();
+        setLocationRelativeTo(null);
+
+        tabelModel.addColumn("ID Buku");
+        tabelModel.addColumn("Judul Buku");
+        tabelModel.addColumn("Stok Buku");
+        tblBuku.setModel(tabelModel);
+    }
+    
+    public void tampilData() {
+        tabelModel.setRowCount(0);
+        List<Buku> daftar = controller.ambilSemuaBuku();
+        for (Buku b : daftar) {
+            tabelModel.addRow(new Object[]{b.getIdBuku(), b.getJudul(), b.getStok()});
+        }
+    }
+    
+    public void bersihkanForm(){
+        txtIdBuku.setText("");
+        txtJudulBuku.setText("");
+        txtStokBuku.setText("");
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+
+        txtStokBuku = new javax.swing.JTextField();
+        txtIdBuku = new javax.swing.JTextField();
+        txtJudulBuku = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        btnTambah = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnLihat = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblBuku = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jLabel1.setText("ID Buku");
+
+        jLabel2.setText("Judul Buku");
+
+        jLabel3.setText("Stok Buku");
+
+        btnTambah.setBackground(new java.awt.Color(153, 255, 153));
+        btnTambah.setText("Tambah");
+        btnTambah.addActionListener(this::btnTambahActionPerformed);
+
+        btnEdit.setBackground(new java.awt.Color(102, 153, 255));
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+
+        btnLihat.setBackground(new java.awt.Color(204, 153, 255));
+        btnLihat.setText("Lihat");
+        btnLihat.addActionListener(this::btnLihatActionPerformed);
+
+        btnHapus.setBackground(new java.awt.Color(255, 102, 102));
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(this::btnHapusActionPerformed);
+
+        tblBuku.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "ID Buku", "Judul Buku", "Stok Buku"
+            }
+        ));
+        tblBuku.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblBukuMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblBuku);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setText("CRUD BUKU SEDERHANA");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(105, 105, 105)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtIdBuku, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addGap(33, 33, 33)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtJudulBuku, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addGap(29, 29, 29)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(txtStokBuku, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(226, 226, 226)
+                                .addComponent(btnTambah)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEdit)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnLihat)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnHapus))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(370, 370, 370)
+                        .addComponent(jLabel4)))
+                .addContainerGap(113, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel4)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtJudulBuku, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtStokBuku, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdBuku, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambah)
+                    .addComponent(btnEdit)
+                    .addComponent(btnLihat)
+                    .addComponent(btnHapus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        pack();
+    }// </editor-fold>                        
+
+    private void btnLihatActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        tampilData();
+    }                                        
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        try {
+            controller.tambahBuku(txtIdBuku.getText(), txtJudulBuku.getText(), txtStokBuku.getText());
+            tampilData();
+            bersihkanForm();
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }                                         
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        try {
+            controller.ubahBuku(txtIdBuku.getText(), txtJudulBuku.getText(), txtStokBuku.getText());
+            tampilData();
+            bersihkanForm();
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }                                       
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        controller.hapusBuku(txtIdBuku.getText());
+        tampilData();
+        bersihkanForm();
+    }                                        
+
+    private void tblBukuMouseClicked(java.awt.event.MouseEvent evt) {                                     
+        int baris = tblBuku.getSelectedRow();
+        txtIdBuku.setText(tblBuku.getValueAt(baris, 0).toString());
+        txtJudulBuku.setText(tblBuku.getValueAt(baris, 1).toString());
+        txtStokBuku.setText(tblBuku.getValueAt(baris, 2).toString());
+    }                                    
+
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new FormBuku().setVisible(true));
+    }
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnLihat;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblBuku;
+    private javax.swing.JTextField txtIdBuku;
+    private javax.swing.JTextField txtJudulBuku;
+    private javax.swing.JTextField txtStokBuku;
+    // End of variables declaration                   
+}
+  ```
+
+
+Kesimpulan: perbedaan fungsi GUI dan Controller
+- GUI — FormBuku (View)
+Menangani tampilan program dan interaksi pengguna, seperti membaca input, merespons klik tombol, menampilkan data dalam tabel, dan mengosongkan form.
+
+- Controller — BukuController
+Mengatur alur operasi buku, memvalidasi input, membuat objek Buku, dan meneruskan permintaan CRUD kepada DAO.
+
+- DAO — BukuDAO
+Menangani operasi akses data buku pada database, seperti mengambil, menambahkan, mengubah, dan menghapus data.
+
+Jadi, fungsi utama GUI adalah menyediakan antarmuka agar pengguna dapat menjalankan fitur CRUD dengan mudah. GUI merupakan bagian View dalam pola MVC (Model–View–Controller), sedangkan proses validasi dan pengaturan operasi dilakukan oleh Controller, dan akses database ditangani oleh DAO.
